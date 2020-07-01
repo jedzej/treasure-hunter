@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  app:
+    container_name: app
+    restart: always
+    build: .
+    ports:
+      - "80:8888"
+    env_file:
+      - backend/.env
+    environment:
+      - REACT_APP_API_PORT=80
+      - REACT_APP_API_PROTOCOL="http:"
+      - PORT=8888
+      - POSTGRES_URL=postgres:5432
+      - FLASK_ENV=production
+    networks:
+      - common
+
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - common
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - common
+    restart: unless-stopped
+
+networks:
+  common:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
