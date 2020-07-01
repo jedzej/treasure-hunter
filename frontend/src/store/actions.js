@@ -7,7 +7,9 @@ export const TYPES = {
 
 export const syncGameState = ({ state }) => ({
   type: TYPES.SYNC_GAME_STATE,
-  payload: { state },
+  payload: {
+    state,
+  },
 });
 
 export const resetGameState = () => ({

@@ -7,7 +7,7 @@ from . import app, envs
 
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app, supports_credentials=True)
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers = gunicorn_logger.handlers

@@ -2,15 +2,11 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import GameBoard from "../../shared/GameBoard";
 import { useGame } from "../../shared/hooks";
+import { TREASURES_TO_REVEAL } from "../../constants";
 
 export default () => {
   const history = useHistory();
-  const {
-    turn,
-    playerName,
-    gameOver,
-    resetGame,
-  } = useGame();
+  const { turn, playerName, isOver, treasuresCount } = useGame();
 
   useEffect(() => {
     if (!playerName) {
@@ -19,17 +15,19 @@ export default () => {
   }, [playerName, history]);
 
   useEffect(() => {
-    if (gameOver) {
+    if (isOver) {
       history.push("/scoreboard");
     }
-  }, [gameOver, history]);
+  }, [isOver, history]);
 
   return (
     <>
       <h1>TREASURE HUNTER - {playerName}</h1>
       <h3>ROUND {turn}</h3>
+      <h4>
+        Treasures found: {treasuresCount}/{TREASURES_TO_REVEAL}
+      </h4>
       <GameBoard />
-      <button onClick={() => resetGame()}>RESET</button>
     </>
   );
 };

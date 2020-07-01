@@ -1,30 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import WelcomeScreen from "./screens/welcome/WelcomeScreen";
 import GameScreen from "./screens/game/GameScreen";
 import ScoreboardScreen from "./screens/scoreboard/ScoreboardScreen";
 import store from "./store/store";
+import { syncGameState } from "./store/actions";
+import { getCurrentGame } from "./api";
+import { selectInitialized } from "./store/selectors";
+
+const AppInitWrapper = ({ children }) => {
+  const dispatch = useDispatch();
+  const initialized = useSelector(selectInitialized);
+
+  useEffect(() => {
+    const initialize = async () => {
+      const { success } = await getCurrentGame();
+      if (success) {
+        dispatch(syncGameState({ state: success?.data }));
+      } else {
+        dispatch(syncGameState({}));
+      }
+    };
+    if (!initialized) {
+      initialize();
+    }
+  }, [initialized, dispatch]);
+
+  return initialized ? children : "wait";
+};
 
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/welcome">
-            <WelcomeScreen />
-          </Route>
-          <Route path="/game">
-            <GameScreen />
-          </Route>
-          <Route path="/scoreboard">
-            <ScoreboardScreen />
-          </Route>
-          <Route path="/">
-            <Redirect to="/welcome" />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <AppInitWrapper>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/welcome">
+              <WelcomeScreen />
+            </Route>
+            <Route path="/game">
+              <GameScreen />
+            </Route>
+            <Route path="/scoreboard">
+              <ScoreboardScreen />
+            </Route>
+            <Route path="/">
+              <Redirect to="/welcome" />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </AppInitWrapper>
     </Provider>
   );
 }

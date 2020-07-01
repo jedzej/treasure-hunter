@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startGame } from "../../store/actions";
+import { syncGameState } from "../../store/actions";
 import { selectPlayerName } from "../../store/selectors";
 import { useHistory } from "react-router";
+import { postStartGame } from "../../api";
 
 export default () => {
   const [draftPlayerName, setDraftPlayerName] = React.useState("");
@@ -25,7 +26,13 @@ export default () => {
       />
       <br />
       <button
-        onClick={() => dispatch(startGame({ playerName: draftPlayerName }))}
+        onClick={async () => {
+          const { success } = await postStartGame({
+            player_name: draftPlayerName,
+          });
+
+          dispatch(syncGameState({ state: success?.data }));
+        }}
       >
         START GAME
       </button>

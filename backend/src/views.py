@@ -73,7 +73,7 @@ def post_reveal():
 
     fields = request.json["fields"]
 
-    if len(fields) != FIELDS_PER_MOVE:
+    if len(fields) > FIELDS_PER_MOVE:
         return "Incorrect fields length", 400
 
     game = Game.query.get(session["game_id"])
@@ -99,6 +99,6 @@ def post_reveal():
 
 @app.route('/api/scoreboard/', methods=['GET'])
 def get_scoreboard():
-    scores = Score.query.order_by(Score.score.desc()).limit(10).all()
+    scores = Score.query.order_by(Score.score.asc()).limit(10).all()
 
     return jsonify([score.serialize() for score in scores])
