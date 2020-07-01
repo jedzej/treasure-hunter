@@ -12,9 +12,12 @@ export const useGame = () => {
   const turn = useSelector(selectTurn);
 
   const [selectedFields, setSelectedFields] = useState([]);
+  const [updatePending, setUpdatePending] = useState(false);
 
   useEffect(() => {
-    if (selectedFields.length === MOVES_PER_TURN) {
+    if (selectedFields.length === MOVES_PER_TURN && !updatePending) {
+      setUpdatePending(true);
+      console.log("dispatching moves");
       setTimeout(() => {
         dispatch(
           syncGameState({
@@ -30,9 +33,10 @@ export const useGame = () => {
           })
         );
         setSelectedFields([]);
+        setUpdatePending(false);
       }, 1000);
     }
-  }, [selectedFields, turn, playerName, board, dispatch]);
+  }, [selectedFields, turn, playerName, board, dispatch, updatePending]);
 
   const treasures = board
     .flat()
