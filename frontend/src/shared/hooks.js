@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { syncGameState, resetGameState } from "../store/actions";
+import {
+  revealFieldsAction,
+  resetGameStateAction,
+} from "../store/actions";
 import {
   selectPlayerName,
   selectBoard,
@@ -9,6 +12,7 @@ import {
 } from "../store/selectors";
 import { FIELD_STATE } from "../constants";
 import { postReveal } from "../api";
+import { zipWith } from "lodash";
 
 export const useGame = () => {
   const dispatch = useDispatch();
@@ -31,13 +35,26 @@ export const useGame = () => {
   const revealFields = async () => {
     setUpdatePending(true);
     const { success } = await postReveal({ fields: selectedFields });
-    dispatch(syncGameState({ state: success?.data }));
+    if (success) {
+      dispatch(
+        revealFieldsAction({
+          fields: zipWith(
+            success.data,
+            selectedFields,
+            (responseField, selection) => ({
+              selection,
+              field: responseField,
+            })
+          ),
+        })
+      );
+    }
     setSelectedFields([]);
     setUpdatePending(false);
   };
 
   const resetGame = () => {
-    dispatch(resetGameState());
+    dispatch(resetGameStateAction());
   };
 
   const fieldMatches = ({ x, y }) => (field) => field.x === x && field.y === y;

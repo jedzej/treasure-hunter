@@ -35,7 +35,12 @@ export default ({ readonly = false }) => {
         </div>
       ))}
       {readonly ? null : (
-        <button onClick={() => revealFields()}>CONFIRM</button>
+        <button
+          disabled={selectedFields.length === 0}
+          onClick={() => revealFields()}
+        >
+          CONFIRM
+        </button>
       )}
     </>
   );

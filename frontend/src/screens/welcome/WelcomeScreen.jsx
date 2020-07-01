@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { syncGameState } from "../../store/actions";
+import { syncGameStateAction } from "../../store/actions";
 import { selectPlayerName } from "../../store/selectors";
 import { useHistory } from "react-router";
 import { postStartGame } from "../../api";
@@ -31,7 +31,7 @@ export default () => {
             player_name: draftPlayerName,
           });
 
-          dispatch(syncGameState({ state: success?.data }));
+          dispatch(syncGameStateAction({ state: success?.data }));
         }}
       >
         START GAME

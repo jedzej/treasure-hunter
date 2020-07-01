@@ -35,15 +35,17 @@ def calculate_distace(x, y, board):
 
 def map_field(x, y, board):
     internal_field_state = board[y][x]
-    if internal_field_state == InternalFieldState.TREASURE_UNREVEALED.value:
-        return (ExternalFieldState.UNREVEALED.value, None)
-    if internal_field_state == InternalFieldState.EMPTY_UNREVEALED.value:
-        return (ExternalFieldState.UNREVEALED.value, None)
+    state = ExternalFieldState.UNREVEALED
+    distance = None
     if internal_field_state == InternalFieldState.TREASURE_REVEALED.value:
-        return (ExternalFieldState.TREASURE_REVEALED.value, None)
+        state = ExternalFieldState.TREASURE_REVEALED
     if internal_field_state == InternalFieldState.EMPTY_REVEALED.value:
+        state = ExternalFieldState.EMPTY_REVEALED
         distance = calculate_distace(x, y, board)
-        return (ExternalFieldState.EMPTY_REVEALED.value, distance)
+    return {
+        "state": state.value,
+        "distance": distance
+    }
 
 
 def internal_to_external_board(internal_board):
@@ -51,11 +53,7 @@ def internal_to_external_board(internal_board):
     for y in range(5):
         row = []
         for x in range(5):
-            (state, distance) = map_field(x, y, internal_board)
-            row.append({
-                "state": state,
-                "distance": distance
-            })
+            row.append(map_field(x, y, internal_board))
         external_board.append(row)
     return external_board
 
@@ -90,6 +88,9 @@ class Game(db.Model):
             InternalFieldState.EMPTY_REVEALED.value],
             flatten(self.board))
         return int(len(list(revealed)) / FIELDS_PER_MOVE) + 1
+
+    def serialize_fields(self, fields):
+        return [map_field(field["x"], field["y"], self.board) for field in fields]
 
     def serialize(self):
         return {

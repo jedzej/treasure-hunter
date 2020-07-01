@@ -94,7 +94,7 @@ def post_reveal():
         db.session.add(score)
     db.session.commit()
 
-    return jsonify(game.serialize())
+    return jsonify(game.serialize_fields(fields))
 
 
 @app.route('/api/scoreboard/', methods=['GET'])

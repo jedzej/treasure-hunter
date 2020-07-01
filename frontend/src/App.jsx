@@ -5,7 +5,7 @@ import WelcomeScreen from "./screens/welcome/WelcomeScreen";
 import GameScreen from "./screens/game/GameScreen";
 import ScoreboardScreen from "./screens/scoreboard/ScoreboardScreen";
 import store from "./store/store";
-import { syncGameState } from "./store/actions";
+import { syncGameStateAction } from "./store/actions";
 import { getCurrentGame } from "./api";
 import { selectInitialized } from "./store/selectors";
 
@@ -17,9 +17,9 @@ const AppInitWrapper = ({ children }) => {
     const initialize = async () => {
       const { success } = await getCurrentGame();
       if (success) {
-        dispatch(syncGameState({ state: success?.data }));
+        dispatch(syncGameStateAction({ state: success?.data }));
       } else {
-        dispatch(syncGameState({}));
+        dispatch(syncGameStateAction({}));
       }
     };
     if (!initialized) {
