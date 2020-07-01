@@ -1,0 +1,9 @@
+export const FIELD_STATE = {
+  UNKNOWN: "UNKNOWN",
+  TO_BE_REVEALED: "TO_BE_REVEALED",
+  EMPTY: "EMPTY",
+  TREASURE: "TREASURE",
+};
+
+export const MOVES_PER_TURN = 3;
+export const TREASURES_TO_REVEAL = 5;
