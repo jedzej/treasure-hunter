@@ -10,6 +10,8 @@ RUN yarn install
 
 COPY ./frontend .
 
+ARG REACT_APP_API_PORT
+ARG REACT_APP_API_PROTOCOL
 RUN yarn build
 
 
@@ -21,7 +23,7 @@ RUN apk add python3 supervisor postgresql-dev gcc python3-dev musl-dev
 # prepare flask app
 WORKDIR /usr/src/backend
 
-COPY backend/requirements.txts .
+COPY ./backend/requirements.txt .
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
@@ -34,8 +36,6 @@ COPY backend/ ./
 COPY supervisor/supervisord.conf /etc/
 
 COPY supervisor/start.sh /var/
-
-COPY release.sh /var/
 
 COPY nginx/* /etc/nginx/
 

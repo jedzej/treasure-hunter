@@ -1,4 +1,7 @@
-const baseURL = "http://localhost:5000/api";
+const { REACT_APP_API_PORT, REACT_APP_API_PROTOCOL } = process.env;
+const baseURL = `${REACT_APP_API_PROTOCOL || "http"}://${
+  window.location.hostname
+}:${REACT_APP_API_PORT || "5000"}/api`;
 const defaultConfig = { cors: "no-cors", credentials: "include" };
 
 const jsonOrNull = async (response) => {

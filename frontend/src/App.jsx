@@ -9,6 +9,7 @@ import { syncGameStateAction } from "./store/actions";
 import { getCurrentGame } from "./api";
 import { selectInitialized } from "./store/selectors";
 
+
 const AppInitWrapper = ({ children }) => {
   const dispatch = useDispatch();
   const initialized = useSelector(selectInitialized);
