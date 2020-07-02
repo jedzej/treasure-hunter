@@ -3,10 +3,49 @@ import GameBoard from "../../shared/GameBoard";
 import { useGame } from "../../shared/hooks";
 import { useHistory } from "react-router";
 import { getScoreboard } from "../../api";
+import {
+  Grid,
+  Typography,
+  Divider,
+  Button,
+  Box,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableBody,
+  Paper,
+} from "@material-ui/core";
+
+const HighscoresTable = ({ scoreboard }) => (
+  <TableContainer component={Paper}>
+    <Table size="small">
+      <TableHead>
+        <TableRow>
+          <TableCell padding="checkbox"/>
+          <TableCell align="left">Name</TableCell>
+          <TableCell align="right">Score</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {scoreboard.map(({ player_name, score }, index) => (
+          <TableRow key={index}>
+            <TableCell padding="checkbox" component="th" scope="row">
+              {index + 1}
+            </TableCell>
+            <TableCell align="left">{player_name}</TableCell>
+            <TableCell align="right">{score}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
 
 export default () => {
   const history = useHistory();
-  const { playerName, resetGame, isOver } = useGame();
+  const { playerName, resetGame, isOver, turn } = useGame();
   const [scoreboard, setScoreboard] = useState([]);
 
   useEffect(() => {
@@ -26,23 +65,47 @@ export default () => {
   }, [isOver, history]);
 
   return (
-    <>
-      <h1>SCOREBOARDS</h1>
-      <h1>TREASURE HUNTER - {playerName}</h1>
-      {scoreboard.map(({ player_name, score }, index) => (
-        <div key={index}>
-          {player_name}: {score}
-        </div>
-      ))}
-      {playerName && <GameBoard readonly />}
-      <button
-        onClick={async () => {
-          await resetGame();
-          history.push("/welcome");
-        }}
-      >
-        NEW GAME
-      </button>
-    </>
+    <Grid container justify="space-between" spacing={2}>
+      {playerName && (
+        <Box pb={2}>
+          <Grid item xs={12}>
+            <Typography variant="h4">CONGRATULATIONS!</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item>
+            <Typography variant="h5">Your score: {turn}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <GameBoard readonly />
+          </Grid>
+        </Box>
+      )}
+      <Grid item xs={12}>
+        <Typography variant="h4">SCOREBOARDS</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider />
+      </Grid>
+      <Grid item xs={12}>
+        <HighscoresTable scoreboard={scoreboard} />
+      </Grid>
+      <Grid item xs={12}>
+        <Box pt={2}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ width: "100%" }}
+            onClick={async () => {
+              await resetGame();
+              history.push("/welcome");
+            }}
+          >
+            NEW GAME
+          </Button>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };

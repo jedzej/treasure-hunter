@@ -8,7 +8,7 @@ import store from "./store/store";
 import { syncGameStateAction } from "./store/actions";
 import { getCurrentGame } from "./api";
 import { selectInitialized } from "./store/selectors";
-
+import { Paper, Container, Box } from "@material-ui/core";
 
 const AppInitWrapper = ({ children }) => {
   const dispatch = useDispatch();
@@ -28,28 +28,40 @@ const AppInitWrapper = ({ children }) => {
     }
   }, [initialized, dispatch]);
 
-  return initialized ? children : "wait";
+  return initialized ? children : null;
 };
+
+const PaperWrapper = ({ children }) => (
+  <Box mt={4}>
+    <Container maxWidth="sm">
+      <Paper elevation={5}>
+        <Box p={2}>{children}</Box>
+      </Paper>
+    </Container>
+  </Box>
+);
 
 function App() {
   return (
     <Provider store={store}>
       <AppInitWrapper>
         <BrowserRouter>
-          <Switch>
-            <Route path="/welcome">
-              <WelcomeScreen />
-            </Route>
-            <Route path="/game">
-              <GameScreen />
-            </Route>
-            <Route path="/scoreboard">
-              <ScoreboardScreen />
-            </Route>
-            <Route path="/">
-              <Redirect to="/welcome" />
-            </Route>
-          </Switch>
+          <PaperWrapper>
+            <Switch>
+              <Route path="/welcome">
+                <WelcomeScreen />
+              </Route>
+              <Route path="/game">
+                <GameScreen />
+              </Route>
+              <Route path="/scoreboard">
+                <ScoreboardScreen />
+              </Route>
+              <Route path="/">
+                <Redirect to="/welcome" />
+              </Route>
+            </Switch>
+          </PaperWrapper>
         </BrowserRouter>
       </AppInitWrapper>
     </Provider>
