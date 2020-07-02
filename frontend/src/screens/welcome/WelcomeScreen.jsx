@@ -4,6 +4,13 @@ import { syncGameStateAction } from "../../store/actions";
 import { selectPlayerName } from "../../store/selectors";
 import { useHistory } from "react-router";
 import { postStartGame } from "../../api";
+import {
+  TextField,
+  Typography,
+  Divider,
+  Grid,
+  Button,
+} from "@material-ui/core";
 
 export default () => {
   const [draftPlayerName, setDraftPlayerName] = React.useState("");
@@ -18,24 +25,44 @@ export default () => {
   }, [playerName, history]);
 
   return (
-    <>
-      <h1>WELCOME</h1>
-      <input
-        value={draftPlayerName}
-        onChange={(event) => setDraftPlayerName(event.target.value)}
-      />
-      <br />
-      <button
-        onClick={async () => {
-          const { success } = await postStartGame({
-            player_name: draftPlayerName,
-          });
+    <form
+      onSubmit={async (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        const { success } = await postStartGame({
+          player_name: draftPlayerName,
+        });
 
-          dispatch(syncGameStateAction({ state: success?.data }));
-        }}
-      >
-        START GAME
-      </button>
-    </>
+        dispatch(syncGameStateAction({ state: success?.data }));
+      }}
+    >
+      <Grid container justify="space-between" spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4">TREASURE HUNTER</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Your name"
+            variant="outlined"
+            value={draftPlayerName}
+            onChange={(event) => setDraftPlayerName(event.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            type="submit"
+            style={{ width: "100%" }}
+          >
+            START GAME
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };

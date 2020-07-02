@@ -38,6 +38,8 @@ const GameBoardField = ({ onClick, field, isSelected, readonly }) => {
           ? "gold"
           : isEmpty
           ? colorScale[field.distance || 0]
+          : isDisabled
+          ? "lightgrey"
           : "lightblue",
         width: "100%",
         height: "60px",

@@ -32,7 +32,7 @@ const AppInitWrapper = ({ children }) => {
 };
 
 const PaperWrapper = ({ children }) => (
-  <Box mt={4}>
+  <Box my={4}>
     <Container maxWidth="sm">
       <Paper elevation={5}>
         <Box p={2}>{children}</Box>

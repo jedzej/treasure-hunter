@@ -42,16 +42,21 @@ export default () => {
   return (
     <Grid container justify="space-between" spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h4">TREASURE HUNTER - {playerName}</Typography>
+        <Typography variant="h4">TREASURE HUNTER</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h5">
+          <strong>{playerName}</strong>
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <Divider />
       </Grid>
       <Grid item>
-        <Typography variant="h5">ROUND {turn}</Typography>
+        <Typography variant="h7">ROUND {turn}</Typography>
       </Grid>
       <Grid item>
-        <Typography variant="h5">
+        <Typography variant="h77">
           <TrasuresIndicator
             count={treasuresCount}
             limit={TREASURES_TO_REVEAL}

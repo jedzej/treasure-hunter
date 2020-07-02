@@ -23,7 +23,7 @@ const HighscoresTable = ({ scoreboard }) => (
     <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox"/>
+          <TableCell padding="checkbox" />
           <TableCell align="left">Name</TableCell>
           <TableCell align="right">Score</TableCell>
         </TableRow>
@@ -67,7 +67,7 @@ export default () => {
   return (
     <Grid container justify="space-between" spacing={2}>
       {playerName && (
-        <Box pb={2}>
+        <>
           <Grid item xs={12}>
             <Typography variant="h4">CONGRATULATIONS!</Typography>
           </Grid>
@@ -78,9 +78,11 @@ export default () => {
             <Typography variant="h5">Your score: {turn}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <GameBoard readonly />
+            <Box pb={2}>
+              <GameBoard readonly />
+            </Box>
           </Grid>
-        </Box>
+        </>
       )}
       <Grid item xs={12}>
         <Typography variant="h4">SCOREBOARDS</Typography>
