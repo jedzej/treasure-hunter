@@ -84,12 +84,14 @@ def post_reveal():
         if game.is_field_revealed(field["x"], field["y"]):
             return "Field already revealed", 400
 
+    game.round += 1
     for field in fields:
         game.reveal_field(field["x"], field["y"])
 
     if game.is_over():
+        session.clear()
         score = Score(player_name=game.player_name,
-                      score=game.calculate_round())
+                      score=game.round)
         db.session.delete(game)
         db.session.add(score)
     db.session.commit()

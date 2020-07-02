@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('games',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('player_name', sa.String(), nullable=True),
-    sa.Column('board', sa.ARRAY(sa.Integer(), dimensions=2), nullable=True),
+    sa.Column('board', sa.ARRAY(sa.Integer(), dimensions=3), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('scores',

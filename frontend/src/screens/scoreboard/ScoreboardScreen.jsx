@@ -6,7 +6,7 @@ import { getScoreboard } from "../../api";
 
 export default () => {
   const history = useHistory();
-  const { playerName, resetGame } = useGame();
+  const { playerName, resetGame, isOver } = useGame();
   const [scoreboard, setScoreboard] = useState([]);
 
   useEffect(() => {
@@ -19,6 +19,12 @@ export default () => {
     loadScoreboard();
   }, [setScoreboard]);
 
+  useEffect(() => {
+    if (isOver === false) {
+      history.push("/game");
+    }
+  }, [isOver, history]);
+
   return (
     <>
       <h1>SCOREBOARDS</h1>
@@ -30,12 +36,12 @@ export default () => {
       ))}
       {playerName && <GameBoard readonly />}
       <button
-        onClick={() => {
-          resetGame();
+        onClick={async () => {
+          await resetGame();
           history.push("/welcome");
         }}
       >
-        RESET
+        NEW GAME
       </button>
     </>
   );

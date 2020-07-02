@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  revealFieldsAction,
-  resetGameStateAction,
-} from "../store/actions";
+import { revealFieldsAction, resetGameStateAction } from "../store/actions";
 import {
   selectPlayerName,
   selectBoard,
@@ -11,7 +8,7 @@ import {
   selectIsOver,
 } from "../store/selectors";
 import { FIELD_STATE } from "../constants";
-import { postReveal } from "../api";
+import { postReveal, deleteCurrentGame } from "../api";
 import { zipWith } from "lodash";
 
 export const useGame = () => {
@@ -53,8 +50,11 @@ export const useGame = () => {
     setUpdatePending(false);
   };
 
-  const resetGame = () => {
-    dispatch(resetGameStateAction());
+  const resetGame = async () => {
+    const { success } = await deleteCurrentGame();
+    if (success) {
+      dispatch(resetGameStateAction());
+    }
   };
 
   const fieldMatches = ({ x, y }) => (field) => field.x === x && field.y === y;

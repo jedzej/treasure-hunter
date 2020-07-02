@@ -7,7 +7,7 @@ const DEFAULT_STATE = {
   initialized: false,
   round: undefined,
   player_name: undefined,
-  is_over: false,
+  is_over: undefined,
   board: range(5).map(() =>
     range(5).map(() => ({ distance: null, state: FIELD_STATE.UNREVEALED }))
   ),
@@ -33,6 +33,7 @@ export const gameReducer = (state = DEFAULT_STATE, action) =>
         draft.playerName = action.payload.playerName;
         break;
       case TYPES.REVEAL_FIELDS:
+        draft.round += 1;
         action.payload.fields.forEach(({ field, selection: { x, y } }) => {
           draft.board[y][x] = field;
         });

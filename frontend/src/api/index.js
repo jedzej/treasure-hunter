@@ -14,6 +14,11 @@ export const postStartGame = ({ player_name }) =>
     body: JSON.stringify({ player_name }),
   });
 
+export const deleteCurrentGame = () =>
+  callApi("/current_game/", {
+    method: "DELETE",
+  });
+
 export const postReveal = ({ fields }) =>
   callApi("/reveal/", {
     headers: {
