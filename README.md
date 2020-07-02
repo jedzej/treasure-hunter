@@ -8,6 +8,7 @@
 1. docker-compose
 
 #### Running instructions
+1. Make that `core.autocrlf=false` in your git config - this step depends on your OS
 1. Clone this repository
 1. Open this directory in console
 1. `docker-compose up --build`
