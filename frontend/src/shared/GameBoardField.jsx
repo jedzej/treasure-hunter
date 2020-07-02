@@ -4,6 +4,7 @@ import { FIELD_STATE } from "../constants";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import Flip from "react-reveal/Flip";
 
 const colorScale = ["#eeeeee", "#bbb", "#888", "#555"];
 
@@ -30,34 +31,65 @@ const GameBoardField = ({ onClick, field, isSelected, readonly }) => {
   const isDisabled = readonly || isRevealed;
 
   return (
-    <Card
-      style={{
-        backgroundColor: isSelected
-          ? "green"
-          : isTreasure
-          ? "gold"
-          : isEmpty
-          ? colorScale[field.distance || 0]
-          : isDisabled
-          ? "lightgrey"
-          : "lightblue",
-        width: "100%",
-        height: "60px",
-      }}
-    >
-      <CardActionArea
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-        onClick={onClick}
-        disabled={isDisabled}
-      >
-        <Typography variant="h5" align="center">
-          {content}
-        </Typography>
-      </CardActionArea>
-    </Card>
+    <>
+      <div style={{ position: "relative", width: "100%", height: "60px" }}>
+        <Card
+          style={{
+            position: "absolute",
+            top: 0,
+            backgroundColor:
+              isSelected || isRevealed
+                ? "green"
+                : isDisabled
+                ? "lightgrey"
+                : "lightblue",
+            width: "100%",
+            height: "60px",
+          }}
+        >
+          <CardActionArea
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            onClick={onClick}
+            disabled={isDisabled}
+          >
+            <Typography variant="h5" align="center">
+              {isSelected || isRevealed ? (
+                <VisibilityIcon />
+              ) : (
+                <VisibilityOffIcon />
+              )}
+            </Typography>
+          </CardActionArea>
+        </Card>
+        <Flip top when={isRevealed}>
+          <Card
+            style={{
+              position: "absolute",
+              top: 0,
+              backgroundColor: isTreasure
+                ? "gold"
+                : colorScale[field.distance || 0],
+              width: "100%",
+              height: "60px",
+              display: isRevealed ? "block" : "none",
+              zIndex: isSelected ? 1000 : 0,
+            }}
+          >
+            <CardActionArea
+              style={{ width: "100%", height: "100%" }}
+              disabled={isDisabled}
+            >
+              <Typography variant="h5" align="center">
+                {content}
+              </Typography>
+            </CardActionArea>
+          </Card>
+        </Flip>
+      </div>
+    </>
   );
 };
 

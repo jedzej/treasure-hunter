@@ -35,7 +35,9 @@ export default () => {
 
   useEffect(() => {
     if (isOver) {
-      history.push("/scoreboard");
+      setTimeout(() => {
+        history.push("/scoreboard");
+      }, 1000);
     }
   }, [isOver, history]);
 

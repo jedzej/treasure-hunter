@@ -72,6 +72,11 @@ export default () => {
             <Typography variant="h4">CONGRATULATIONS!</Typography>
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="h5">
+              <strong>{playerName}</strong>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <Divider />
           </Grid>
           <Grid item>
@@ -85,7 +90,7 @@ export default () => {
         </>
       )}
       <Grid item xs={12}>
-        <Typography variant="h4">SCOREBOARDS</Typography>
+        <Typography variant="h4">SCOREBOARD</Typography>
       </Grid>
       <Grid item xs={12}>
         <Divider />
